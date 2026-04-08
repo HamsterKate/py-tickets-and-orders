@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+@transaction.atomic
 def create_order(tickets: list[dict],
                  username: str,
                  date: str = None) -> Order:
@@ -17,25 +18,25 @@ def create_order(tickets: list[dict],
     """
     user = User.objects.get(username=username)
 
-    with transaction.atomic():
-        order_data = {"user": user}
-        if date:
-            order_data["created_at"] = date
-        order = Order.objects.create(**order_data)
+    # створюємо Order
+    order = Order(user=user)
+    if date:
+        order.created_at = parse_datetime(date)
+    order.save()
 
-        for ticket in tickets:
-            movie_session = MovieSession.objects.get(id=ticket["movie_session"])
-            Ticket.objects.create(
-                movie_session=movie_session,
-                order=order,
-                row=ticket["row"],
-                seat=ticket["seat"]
-            )
+    for ticket_data in tickets:
+        movie_session = MovieSession.objects.get(id=ticket_data["movie_session"])
+        Ticket.objects.create(
+            movie_session=movie_session,
+            order=order,
+            row=ticket_data["row"],
+            seat=ticket_data["seat"],
+        )
 
     return order
 
 
-def get_orders(username: str = None) -> QuerySet:
+def get_orders(username: str = None) -> QuerySet[Order]:
     queryset = Order.objects.all()
     if username:
         queryset = queryset.filter(user__username=username)
