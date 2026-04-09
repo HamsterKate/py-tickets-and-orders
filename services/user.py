@@ -12,9 +12,8 @@ def create_user(
 ) -> User:
     user = User.objects.create_user(
         username=username,
-        password=password
+        password=password,
     )
-
     if email:
         user.email = email
 
@@ -29,7 +28,7 @@ def create_user(
 
 
 def get_user(user_id: int) -> User:
-    return User.objects.get(pk=user_id)
+    return get_user_model().objects.get(pk=user_id)
 
 
 def update_user(

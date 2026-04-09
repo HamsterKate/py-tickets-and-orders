@@ -33,10 +33,6 @@ def create_movie(
     genres_ids: list[int] = None,
     actors_ids: list[int] = None,
 ) -> Movie:
-    """
-    Створює фільм з опційними жанрами та акторами.
-    Якщо щось піде не так, транзакція відкотиться автоматично.
-    """
     movie = Movie.objects.create(
         title=movie_title,
         description=movie_description,
