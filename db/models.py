@@ -96,7 +96,7 @@ class Ticket(models.Model):
             "<Ticket: {} {} (row: {}, seat: {})>"
             .format(
                 self.movie_session.movie.title,
-                str(self.movie_session.show_time),
+                self.movie_session.show_time.strftime("%Y-%m-%d %H:%M:%S"),
                 self.row,
                 self.seat
             )
