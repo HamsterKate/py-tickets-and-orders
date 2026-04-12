@@ -91,7 +91,6 @@ class Ticket(models.Model):
     row = models.IntegerField()
     seat = models.IntegerField()
 
-    @property
     def __str__(self) -> str:
         return (
             "<Ticket: {} {} (row: {}, seat: {})>"
@@ -118,7 +117,7 @@ class Ticket(models.Model):
             raise ValidationError({
                 "seat": (
                     "seat number must be in available range: "
-                    f"1, seats_in_row): (1, {hall.seats_in_row})"
+                    f"(1, seats_in_row): (1, {hall.seats_in_row})"
                 )
             })
 
