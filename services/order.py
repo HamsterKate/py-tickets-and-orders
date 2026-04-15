@@ -1,7 +1,6 @@
 from django.db import transaction
 from db.models import Order, Ticket, MovieSession
 from django.db.models import QuerySet
-from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 
 from django.contrib.auth import get_user_model
