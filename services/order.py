@@ -20,17 +20,14 @@ def create_order(
     username: str, user who creates the order
     date: optional str, sets created_at
     """
-    user: User = User.objects.get(username=username)
+    user: User = get_user_model().objects.get(username=username)
+
+    order = Order.objects.create(user=user)
 
     if date:
         created_at = parse_datetime(date)
-    else:
-        created_at = timezone.now()
-
-    order: Order = Order.objects.create(
-        user=user,
-        created_at=created_at
-    )
+        Order.objects.filter(id=order.id).update(created_at=created_at)
+        order.refresh_from_db()
 
     for ticket_data in tickets:
         movie_session = MovieSession.objects.get(

@@ -64,14 +64,14 @@ class MovieSession(models.Model):
 
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE,
-                             related_name="orders")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="orders"
+    )
 
     def __str__(self) -> str:
-        return "<Order: {}>".format(
-            self.created_at.strftime("%Y-%m-%d %H:%M:%S")
-        )
+        return str(self.created_at)
 
     class Meta:
         ordering = ["-created_at"]
@@ -93,7 +93,7 @@ class Ticket(models.Model):
 
     def __str__(self) -> str:
         return (
-            "<Ticket: {} {} (row: {}, seat: {})>".format(
+            "{} {} (row: {}, seat: {})".format(
                 self.movie_session.movie.title,
                 self.movie_session.show_time.strftime("%Y-%m-%d %H:%M:%S"),
                 self.row,
